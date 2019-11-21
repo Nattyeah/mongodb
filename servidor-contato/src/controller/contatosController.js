@@ -28,22 +28,55 @@ const add = (request, response) => {
     })
   }
   
-  // let contato = request.body
-  // let baseDados = model.agenda.contatos
-  // contato.id = Math.random().toString(36).substr(-8)
+  const getByName = (request, response) => {
+    const nomeParam = request.params.nome
+    // const filtro = { nome: nomeParam }
+    const regex = new RegExp(nomeParam)
+    // const filtro = { nome: /^t/ }
+    const filtro = { nome: regex }
 
-  // if (!contato.nome || !contato.dataNascimento || !contato.celular) {
-  //   response.status(400).send("Dados inválidos");
-  // } else {
-  //   if (baseDados.find(dado => dado.nome === contato.nome)) {
-  //     response.status(400).send("Contato já cadastrado")
-  //   } else {
-  //     model.agenda.contatos.push(contato)
-  //     response.status(201).send(contato)
-  //   }
-  // }
-
+    contatosCollection.find(filtro, (error, contatos) => {
+      if(error){
+        return response.status(500).send(error)
+      } else {
+        // if(contatos.length)
+        return response.status(200).send(contatos)
+      }
+    }
+    )}
+   const getById = (request, response) => {
+    const idParam = request.params.id
+    contatosCollection.findById(idParam, (error, contato) =>{
+      if(error) {
+        return response.status(500).send(error)
+      } else {
+        if(contato) {
+        return response.status(200).send(contato)
+        } else {
+          return response.status(404).send('Contato não encontrado')
+        }
+      }
+    })
+   }
+   const removeContato = (request, response) => {
+    const remover = request.params.id
+    contatosCollection.removeContato(remover, (error, contato) =>{
+      if(error) {
+        return response.status(500).send(error)
+      } else {
+        if(contato) {
+        return response.status(200).send(contato)
+        } else {
+          return response.status(404).send('Contato não encontrado')
+        }
+      }
+    })
+   }
 module.exports = {
   getAll,
-  add
+  getByName,
+  add,
+  getById,
+  removeContato
+  
 }
