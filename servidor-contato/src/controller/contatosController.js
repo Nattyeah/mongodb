@@ -72,11 +72,27 @@ const add = (request, response) => {
       }
     })
    }
+   const atualizaContato = (request, response) => {
+     const atualizar = request.params.id
+     const atualizaBody = request.body
+     contatosCollection.findByIdAndUpdate(atualizar, atualizaBody, (error, contato) => {
+      if(error) {
+        return response.status(500).send(error)
+      } else {
+        if(contato) {
+        return response.status(200).send(contato)
+        } else {
+          return response.status(404).send('Contato não encontrado')
+        }
+      }
+     })
+   }
 module.exports = {
   getAll,
   getByName,
   add,
   getById,
-  removeContato
+  removeContato,
+  atualizaContato
   
 }

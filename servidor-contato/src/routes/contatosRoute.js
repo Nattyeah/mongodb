@@ -1,12 +1,12 @@
 const express = require("express")
 const router = express.Router()
-const bodyParser = require("body-parser")
 const controller = require("../controller/contatosController")
 
 router.get("/", controller.getAll)
+router.patch("/atualizar/:id", controller.atualizaContato)
 router.delete("/deletar/:id", controller.removeContato)
-router.get("/id/:id", bodyParser.json(), controller.getById)
-router.get("/nome/:nome", bodyParser.json(), controller.getByName)
-router.post("/criar", bodyParser.json(), controller.add)
+router.get("/id/:id", controller.getById)
+router.get("/nome/:nome", controller.getByName)
+router.post("/criar", controller.add)
 
 module.exports = router
